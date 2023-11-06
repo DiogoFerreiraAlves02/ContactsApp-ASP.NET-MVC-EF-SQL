@@ -15,6 +15,7 @@ namespace ContactsApp {
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
                 );
             builder.Services.AddScoped<IContactRepos, ContactRepos>();
+            builder.Services.AddScoped<IUserRepos, UserRepos>();
 
             var app = builder.Build();
 
