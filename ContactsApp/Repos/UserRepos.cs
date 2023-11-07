@@ -9,6 +9,10 @@ namespace ContactsApp.Repos {
             _dbContext = dbContext;
         }
 
+        public User GetByLogin(string login) {
+            return _dbContext.Users.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper());
+        }
+
         public List<User> GetAll() {
             return _dbContext.Users.ToList();
         }
@@ -53,5 +57,6 @@ namespace ContactsApp.Repos {
             _dbContext.SaveChanges();
             return true;
         }
+
     }
 }
