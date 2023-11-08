@@ -1,8 +1,10 @@
-﻿using ContactsApp.Models;
+﻿using ContactsApp.Filters;
+using ContactsApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace ContactsApp.Controllers {
+    [LoggedUserPage]
     public class HomeController : Controller {
 
         public IActionResult Index() {

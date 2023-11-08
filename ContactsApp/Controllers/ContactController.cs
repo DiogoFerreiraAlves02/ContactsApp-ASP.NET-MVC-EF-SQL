@@ -1,8 +1,10 @@
-﻿using ContactsApp.Models;
+﻿using ContactsApp.Filters;
+using ContactsApp.Models;
 using ContactsApp.Repos.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactsApp.Controllers {
+    [LoggedUserPage]
     public class ContactController : Controller {
         private readonly IContactRepos _contactRepos;
         public ContactController(IContactRepos contactRepos) {

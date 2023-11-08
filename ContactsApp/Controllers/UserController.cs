@@ -1,9 +1,11 @@
-﻿using ContactsApp.Models;
+﻿using ContactsApp.Filters;
+using ContactsApp.Models;
 using ContactsApp.Repos;
 using ContactsApp.Repos.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactsApp.Controllers {
+    [RestrictAdminPage]
     public class UserController : Controller {
         private readonly IUserRepos _userRepos;
         public UserController(IUserRepos userRepos) {
