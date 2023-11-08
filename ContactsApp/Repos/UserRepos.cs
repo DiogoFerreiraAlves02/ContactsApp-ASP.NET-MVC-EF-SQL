@@ -19,6 +19,7 @@ namespace ContactsApp.Repos {
 
         public User Create(User user) {
             user.CreateDate = DateTime.Now;
+            user.SetPasswordHash();
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return user;

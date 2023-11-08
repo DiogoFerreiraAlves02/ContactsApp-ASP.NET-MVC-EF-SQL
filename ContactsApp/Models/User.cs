@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Enums;
+using ContactsApp.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContactsApp.Models {
@@ -19,7 +20,11 @@ namespace ContactsApp.Models {
         public DateTime? UpdateDate { get; set; }
 
         public bool ValidPassword(string password) {
-            return Password == password;
+            return Password == password.GenerateHash();
+        }
+
+        public void SetPasswordHash() {
+            Password = Password.GenerateHash();
         }
     }
 }
