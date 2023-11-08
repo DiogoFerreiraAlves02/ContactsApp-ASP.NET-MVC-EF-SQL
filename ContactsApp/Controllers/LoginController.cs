@@ -1,14 +1,21 @@
-﻿using ContactsApp.Models;
+﻿using ContactsApp.Helpers;
+using ContactsApp.Models;
 using ContactsApp.Repos.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactsApp.Controllers {
     public class LoginController : Controller {
         private readonly IUserRepos _userRepos;
-        public LoginController(IUserRepos userRepos) {
-            _userRepos= userRepos; 
+        private readonly ISessionTemp _sessionTemp;
+        public LoginController(IUserRepos userRepos, ISessionTemp sessionTemp) {
+            _userRepos = userRepos;
+            _sessionTemp = sessionTemp;
         }
         public IActionResult Index() {
+            //if user is already logged in redirect to home
+            if(_sessionTemp.GetUserSession() != null) {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -20,6 +27,7 @@ namespace ContactsApp.Controllers {
 
                     if(user != null) {
                         if (user.ValidPassword(loginModel.Password)) {
+                            _sessionTemp.CreateUserSession(user);
                             return RedirectToAction("Index", "Home");
                         }
                         TempData["ErrorMessage"] = $"User password is wrong. Please, try again.";
@@ -32,6 +40,11 @@ namespace ContactsApp.Controllers {
                 TempData["ErrorMessage"] = $"Oops, error logging in, try again. Error: {e.Message}";
                 return RedirectToAction("Index");
             }
+        }
+
+        public IActionResult Logout() {
+            _sessionTemp.RemoveUserSession();
+            return RedirectToAction("Index","Login");
         }
     }
 }
