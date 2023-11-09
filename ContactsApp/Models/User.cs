@@ -26,5 +26,11 @@ namespace ContactsApp.Models {
         public void SetPasswordHash() {
             Password = Password.GenerateHash();
         }
+
+        public string GeneratePassword() {
+            string newPwd = Guid.NewGuid().ToString().Substring(0,8);
+            Password = newPwd.GenerateHash();
+            return newPwd;
+        }
     }
 }

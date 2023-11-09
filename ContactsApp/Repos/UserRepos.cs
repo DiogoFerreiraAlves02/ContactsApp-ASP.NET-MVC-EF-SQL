@@ -9,6 +9,10 @@ namespace ContactsApp.Repos {
             _dbContext = dbContext;
         }
 
+        public User GetByLoginEmail(string login, string email) {
+            return _dbContext.Users.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper() && x.Email.ToUpper() == email.ToUpper());
+        }
+
         public User GetByLogin(string login) {
             return _dbContext.Users.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper());
         }

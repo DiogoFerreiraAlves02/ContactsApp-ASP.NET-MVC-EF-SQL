@@ -7,9 +7,11 @@ namespace ContactsApp.Controllers {
     public class LoginController : Controller {
         private readonly IUserRepos _userRepos;
         private readonly ISessionTemp _sessionTemp;
-        public LoginController(IUserRepos userRepos, ISessionTemp sessionTemp) {
+        private readonly IEmail _email;
+        public LoginController(IUserRepos userRepos, ISessionTemp sessionTemp, IEmail email) {
             _userRepos = userRepos;
             _sessionTemp = sessionTemp;
+            _email=email;
         }
         public IActionResult Index() {
             //if user is already logged in redirect to home
@@ -45,6 +47,42 @@ namespace ContactsApp.Controllers {
         public IActionResult Logout() {
             _sessionTemp.RemoveUserSession();
             return RedirectToAction("Index","Login");
+        }
+
+        public IActionResult RedefinePassword() {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RedefinePassword(RedefinePasswordModel redefinePasswordModel) {
+            try {
+                if (ModelState.IsValid) {
+                    User user = _userRepos.GetByLoginEmail(redefinePasswordModel.Login, redefinePasswordModel.Email);
+
+                    if (user != null) {
+                        string newPwd = user.GeneratePassword();
+                        string msg = $"Your new password is: {newPwd}";
+
+                        bool emailSended = _email.Send(user.Email, "Contacts App - New Password", msg);
+
+                        if(emailSended) {
+                            _userRepos.Edit(user);
+                            TempData["SuccessMessage"] = $"A new password has been sent to your email.";
+                        }
+                        else {
+                            TempData["ErrorMessage"] = $"Unable to send email. Please, try again.";
+                        }
+                      
+                        return RedirectToAction("Index", "Login");
+                    }
+                    TempData["ErrorMessage"] = $"Unable to reset your password. Please check the data provided.";
+                }
+                return View("RedefinePassword");
+            }
+            catch (Exception e) {
+                TempData["ErrorMessage"] = $"Oops, unable to reset your password, try again. Error: {e.Message}";
+                return RedirectToAction("RedefinePassword");
+            }
         }
     }
 }

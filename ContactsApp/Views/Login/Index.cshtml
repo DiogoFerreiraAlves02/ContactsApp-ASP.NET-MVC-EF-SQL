@@ -10,6 +10,12 @@
         @TempData["ErrorMessage"]
     </div>
 }
+@if(TempData["SuccessMessage"] != null) {
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" aria-label="Close">X</button>
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 <form asp-controller="Login" asp-action="Access" method="post">
   <div class="form-group mb-2">
@@ -22,5 +28,6 @@
     <input type="password" asp-for="Password" class="form-control" id="password">
     @Html.ValidationMessageFor(x => x.Password)
   </div>
+  <p class="mb-4 text-sm mx-auto">Forgot your password? <a asp-action="RedefinePassword" asp-controller="Login" class="text-primary fw-bold">Redefine password</a></p>
   <button type="submit" class="btn btn-primary col-12">Login</button>
 </form>
