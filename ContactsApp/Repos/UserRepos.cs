@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Data;
+using ContactsApp.Helpers;
 using ContactsApp.Models;
 using ContactsApp.Repos.Interfaces;
 
@@ -50,6 +51,24 @@ namespace ContactsApp.Repos {
             _dbContext.SaveChanges();
 
             return userDb;
+        }
+
+        public User ChangePwd(ChangePassword changePassword) {
+            User user = GetById(changePassword.Id);
+
+            if (user == null) throw new Exception("Error changing password, user not found.");
+
+            if(!user.ValidPassword(changePassword.CurrentPassword)) throw new Exception("Current password doesn't match.");
+
+            if(user.ValidPassword(changePassword.NewPassword)) throw new Exception("The new password must be different from the current one.");
+
+            user.SetNewPassword(changePassword.NewPassword);
+            user.UpdateDate = DateTime.Now;
+
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+
+            return user;
         }
 
         public bool Delete(int id) {

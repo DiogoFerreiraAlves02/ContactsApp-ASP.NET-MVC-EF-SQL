@@ -8,6 +8,7 @@ namespace ContactsApp.Repos.Interfaces {
         User GetById(int id);
         User Create(User user);
         User Edit(User user);
+        User ChangePwd(ChangePassword changePassword);
         bool Delete(int id);
     }
 }

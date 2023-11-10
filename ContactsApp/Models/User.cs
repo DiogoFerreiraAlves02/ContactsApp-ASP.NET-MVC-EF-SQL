@@ -32,5 +32,9 @@ namespace ContactsApp.Models {
             Password = newPwd.GenerateHash();
             return newPwd;
         }
+
+        public void SetNewPassword(string newPwd) {
+            Password = newPwd.GenerateHash();
+        }
     }
 }
