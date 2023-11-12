@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Filters;
+using ContactsApp.Helpers;
 using ContactsApp.Models;
 using ContactsApp.Repos.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +8,15 @@ namespace ContactsApp.Controllers {
     [LoggedUserPage]
     public class ContactController : Controller {
         private readonly IContactRepos _contactRepos;
-        public ContactController(IContactRepos contactRepos) {
+        private readonly ISessionTemp _sessionTemp;
+        public ContactController(IContactRepos contactRepos, ISessionTemp sessionTemp) {
             _contactRepos = contactRepos;
+            _sessionTemp = sessionTemp;
         }
 
         public IActionResult Index() {
-            List<Contact> contacts = _contactRepos.GetAll();
+            User userLogged = _sessionTemp.GetUserSession();
+            List<Contact> contacts = _contactRepos.GetAll(userLogged.Id);
             return View(contacts);
         }
 
@@ -24,7 +28,9 @@ namespace ContactsApp.Controllers {
         public IActionResult Create(Contact contact) {
             try {
                 if (ModelState.IsValid) {
-                    _contactRepos.Create(contact);
+                    User userLogged = _sessionTemp.GetUserSession();
+                    contact.UserId = userLogged.Id;
+                    contact = _contactRepos.Create(contact);
                     TempData["SuccessMessage"] = "Contact added successfully";
                     return RedirectToAction("Index");
                 }
@@ -46,7 +52,9 @@ namespace ContactsApp.Controllers {
         public IActionResult Edit(Contact contact) {
             try {
                 if (ModelState.IsValid) {
-                    _contactRepos.Edit(contact);
+                    User userLogged = _sessionTemp.GetUserSession();
+                    contact.UserId = userLogged.Id;
+                    contact = _contactRepos.Edit(contact);
                     TempData["SuccessMessage"] = "Contact edited successfully";
                     return RedirectToAction("Index");
                 }

@@ -9,8 +9,8 @@ namespace ContactsApp.Repos {
             _dbContext = dbContext;
         }
 
-        public List<Contact> GetAll() {
-            return _dbContext.Contacts.ToList();
+        public List<Contact> GetAll(int userId) {
+            return _dbContext.Contacts.Where(x => x.UserId == userId).ToList();
         }
 
         public Contact Create(Contact contact) {

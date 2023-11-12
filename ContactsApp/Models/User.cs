@@ -18,6 +18,7 @@ namespace ContactsApp.Models {
         public string Password { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
+        public virtual List<Contact>? Contacts { get; set; }
 
         public bool ValidPassword(string password) {
             return Password == password.GenerateHash();

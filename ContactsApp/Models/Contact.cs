@@ -11,6 +11,9 @@ namespace ContactsApp.Models {
         [Required(ErrorMessage = "Insert contact phone")]
         [Phone(ErrorMessage = "Phone is not valid!")]
         public string Phone { get; set; }
+        public int? UserId { get; set; }
+        public User? User { get; set; }
+
 
     }
 }
