@@ -30,6 +30,7 @@
                 <th scope="col" class="text-center">Login</th>
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Profile</th>
+                <th scope="col" class="text-center">Total Contacts</th>
                 <th scope="col" class="text-center">Create Date</th>
                 <th scope="col" class="text-center"></th>
             </tr>
@@ -43,6 +44,9 @@
                         <td>@user.Login</td>
                         <td>@user.Email</td>
                         <td>@(user.Profile == ContactsApp.Enums.ProfileEnum.Admin ? "Admin" : "Default")</td>
+                        <td>
+                            <a href="javascript:" user-id="@user.Id" class="btn btn-success btn-sm btn-contacts-total">@(user.Contacts != null && user.Contacts.Any() ? user.Contacts.Count() : 0)</a>
+                        </td>
                         <td>@user.CreateDate</td>
                         <td>
                             <div class="btn-group" role="group">
@@ -55,4 +59,25 @@
             }
         </tbody>
     </table>
+
+
+
+    <div id="userContactsModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Contact List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="UserContactList">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>

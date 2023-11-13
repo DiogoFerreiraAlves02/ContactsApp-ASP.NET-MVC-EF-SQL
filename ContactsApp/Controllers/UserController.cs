@@ -8,8 +8,10 @@ namespace ContactsApp.Controllers {
     [RestrictAdminPage]
     public class UserController : Controller {
         private readonly IUserRepos _userRepos;
-        public UserController(IUserRepos userRepos) {
+        private readonly IContactRepos _contactRepos;
+        public UserController(IUserRepos userRepos, IContactRepos contactRepos) {
             _userRepos = userRepos;
+            _contactRepos = contactRepos;
         }
         public IActionResult Index() {
             List<User> users = _userRepos.GetAll();
@@ -88,6 +90,11 @@ namespace ContactsApp.Controllers {
                 TempData["ErrorMessage"] = $"Oops, error editing user, try again. Error: {e.Message}";
                 return RedirectToAction("Index");
             }
+        }
+        
+        public IActionResult UserContactListById(int id) {
+            List<Contact> contacts = _contactRepos.GetAll(id);
+            return PartialView("_UserContacts", contacts);
         }
     }
 }

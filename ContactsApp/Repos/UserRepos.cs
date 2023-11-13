@@ -2,6 +2,7 @@
 using ContactsApp.Helpers;
 using ContactsApp.Models;
 using ContactsApp.Repos.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContactsApp.Repos {
     public class UserRepos : IUserRepos{
@@ -19,7 +20,7 @@ namespace ContactsApp.Repos {
         }
 
         public List<User> GetAll() {
-            return _dbContext.Users.ToList();
+            return _dbContext.Users.Include(x => x.Contacts).ToList();
         }
 
         public User Create(User user) {

@@ -1,0 +1,23 @@
+﻿@model List<Contact>
+<table id="table-contacts-user" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center">Email</th>
+            <th scope="col" class="text-center">Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model != null && Model.Any()) {
+            foreach (var contact in Model) {
+                <tr>
+                    <th scope="row">@contact.Id</th>
+                    <td>@contact.Name</td>
+                    <td>@contact.Email</td>
+                    <td>@contact.Phone</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
